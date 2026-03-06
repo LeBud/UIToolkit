@@ -1,0 +1,52 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/TestUI.uss?fileID=7433441132597879392&amp;guid=1b129eabe21775e409b4426b7d922b28&amp;type=3#TestUI"/>
+    <Style src="project://database/Assets/UI%20Toolkit/USS/OptionsUSS.uss?fileID=7433441132597879392&amp;guid=098f595f4ad626e45925f0d4b97d2dbf&amp;type=3#OptionsUSS"/>
+    <Style src="project://database/Assets/UI%20Toolkit/USS/OptionsElementsUSS.uss?fileID=7433441132597879392&amp;guid=4d73b22228ad35044ab33e7a36d88faa&amp;type=3#OptionsElementsUSS"/>
+    <ui:VisualElement name="MenuPanel" picking-mode="Position" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); overflow: visible; visibility: visible; display: none; position: relative;">
+        <ui:Label text="Game Name" name="GameText" class="GameTitle"/>
+        <ui:GroupBox name="MenuButton" style="align-items: center; height: auto; width: 100%; align-self: center; justify-content: flex-end; bottom: -60%;">
+            <ui:Button text="Play" name="PlayButton" class="ButtonStyle"/>
+            <ui:Button text="Options" name="OptionsButton" class="ButtonStyle"/>
+            <ui:Button text="Credits" name="CreditButton" class="ButtonStyle"/>
+            <ui:Button text="Quit" name="QuitButton" class="ButtonStyle"/>
+        </ui:GroupBox>
+    </ui:VisualElement>
+    <ui:VisualElement name="OptionsPanel" style="flex-grow: 1; display: flex;">
+        <ui:Label text="Options" class="MenuTItle"/>
+        <ui:TabView class="unity-tab_header">
+            <ui:Tab label="Video" name="video">
+                <ui:DropdownField label="Resolution" name="Resolution"/>
+                <ui:EnumField label="Display Mode" name="DisplayMode" include-obsolete-values="false"/>
+                <ui:DropdownField label="Quality Preset" name="QualityPreset"/>
+                <ui:SliderInt label="Contrast" value="42" high-value="100" name="Contrast" fill="true"/>
+                <ui:SliderInt label="Brightness" value="42" high-value="100" name="Brightness" fill="true"/>
+                <ui:SliderInt label="Field of view" value="80" high-value="100" name="FOV" fill="true" low-value="60"/>
+                <ui:Label text="Accessibility Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
+                <ui:Toggle label="Show symbols" name="symbols"/>
+                <ui:Toggle label="Show outline" name="outlines"/>
+                <ui:SliderInt label="Outlines thickness" value="4" high-value="10" name="outline-thickness" low-value="1" fill="true"/>
+            </ui:Tab>
+            <ui:Tab label="Audio" name="audio">
+                <ui:DropdownField label="Audio Language" name="AudioLanguage" choices="Francais,English,Espanol" index="0"/>
+                <ui:DropdownField label="Text Language" name="TextLanguage" choices="French,English,Spanish,Russian,German,Japanese" index="0"/>
+                <ui:Toggle label="Dialoge Subtitles" name="Subtitle" value="false"/>
+                <ui:SliderInt label="Master Volume" value="50" high-value="100" name="Master" fill="true" show-input-field="false" direction="Horizontal"/>
+                <ui:SliderInt label="SFX Volume" value="50" high-value="100" name="SFX" fill="true"/>
+                <ui:SliderInt label="Voice Volume" value="50" high-value="100" name="Voice" fill="true" show-input-field="false"/>
+                <ui:SliderInt label="Music VOlume" value="50" high-value="100" name="Music" inverted="false" fill="true"/>
+            </ui:Tab>
+            <ui:Tab label="Game" name="game">
+                <ui:Toggle label="Invert Camera (horizontal)" name="InvertCamHor"/>
+                <ui:Toggle label="Invert Camera (vertical)" name="InvertCamVer"/>
+                <ui:DropdownField label="Difficulty" name="Difficulty" choices="Easy,Medium,Hard" index="1"/>
+            </ui:Tab>
+            <ui:Tab label="Control" name="control"/>
+        </ui:TabView>
+        <ui:Button text="back to menu" name="OptionsMenuBtt" class="ButtonStyle" style="width: 339px; height: auto;"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="CreditPanel" style="flex-grow: 1; display: none;">
+        <ui:Label text="Credits" class="MenuTItle"/>
+        <ui:Label text="Game Designer :&#10;Name&#10;&#10;Game Art :&#10;Name&#10;&#10;Game Prog :&#10;Name" style="font-size: 24px; -unity-text-align: middle-center; margin-top: 150px; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
+        <ui:Button text="back to menu" name="CreditMenuBtt" class="ButtonStyle" style="width: 339px; height: auto; bottom: -555px;"/>
+    </ui:VisualElement>
+</ui:UXML>

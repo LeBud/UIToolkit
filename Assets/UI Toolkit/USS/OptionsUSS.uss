@@ -1,0 +1,164 @@
+:root {
+}
+
+.unity-tab__header {
+    opacity: 1;
+    display: flex;
+    font-size: 32px;
+    -unity-font-style: bold;
+    margin-left: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 0;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    flex-grow: 0;
+    align-items: stretch;
+    transition-property: scale;
+    transition-duration: 0.2s;
+    border-bottom-width: 0;
+    border-bottom-color: rgb(255, 156, 0);
+    border-left-color: rgb(255, 156, 0);
+    border-right-color: rgb(255, 156, 0);
+    border-top-color: rgb(255, 156, 0);
+    background-color: rgb(103, 63, 0);
+    border-left-width: 4px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+}
+
+.unity-tab__header:checked {
+    opacity: 1;
+    display: flex;
+    font-size: 32px;
+    -unity-font-style: bold;
+    margin-left: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 0;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    flex-grow: 0;
+    align-items: stretch;
+    transition-property: scale;
+    transition-duration: 0.2s;
+    scale: 1 1;
+    background-color: rgb(255, 159, 8);
+    border-left-width: 4px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-bottom-width: 0;
+}
+
+.unity-tab__header:hover {
+    opacity: 1;
+    display: flex;
+    font-size: 32px;
+    -unity-font-style: bold;
+    margin-left: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 0;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    flex-grow: 0;
+    align-items: stretch;
+    transition-property: scale;
+    transition-duration: 0.2s;
+    scale: 1.1 1.1;
+    background-color: rgb(255, 156, 0);
+    transform-origin: bottom;
+}
+
+.unity-tab-view {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(14, 14, 14, 0);
+    margin-left: 0;
+    border-left-width: 0;
+    border-top-width: 0;
+    border-top-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-width: 0;
+    border-right-color: rgba(0, 0, 0, 0);
+    border-bottom-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0);
+    margin-right: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.unity-tab {
+    background-color: rgb(103, 63, 0);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    flex-grow: 0.8;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    height: 100%;
+    border-left-color: rgb(255, 156, 0);
+    border-right-color: rgb(255, 156, 0);
+    border-top-color: rgb(255, 156, 0);
+    border-bottom-color: rgb(255, 156, 0);
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-width: 10px;
+    border-right-width: 10px;
+}
+
+.unity-tab__content-container {
+}
+
+.unity-tab-view__header-container {
+    width: 60%;
+    height: 100%;
+    background-color: rgba(14, 14, 14, 0);
+    margin-left: 0;
+    border-left-width: 0;
+    border-top-width: 0;
+    border-top-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-width: 0;
+    border-right-color: rgba(0, 0, 0, 0);
+    border-bottom-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0);
+    padding-left: 40px;
+    padding-right: 40px;
+    flex-grow: 0;
+}
+
+.unity-tab-view__content-container {
+    width: 60%;
+    height: 100%;
+    background-color: rgba(14, 14, 14, 0);
+    margin-left: 0;
+    border-left-width: 0;
+    border-top-width: 0;
+    border-top-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-width: 0;
+    border-right-color: rgba(0, 0, 0, 0);
+    border-bottom-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0);
+    padding-left: 40px;
+    padding-right: 40px;
+}
