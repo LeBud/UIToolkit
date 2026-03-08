@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
+using ShadowQuality = UnityEngine.ShadowQuality;
+using ShadowResolution = UnityEngine.ShadowResolution;
 using Slider = UnityEngine.UIElements.Slider;
 
-public class UICodeTest : MonoBehaviour {
+public class MenuUI : MonoBehaviour {
 
     [SerializeField] private UIDocument UIDocument;
     [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private Volume volume;
+    
+    private ColorAdjustments colorAdjustments;
     
     VisualElement mainMenuRoot;
     VisualElement optionsMenuRoot;
@@ -22,6 +26,8 @@ public class UICodeTest : MonoBehaviour {
     int selectedResIndex;
     
     private void Start() {
+        if(volume.profile.TryGet(out colorAdjustments)) LogFunction("Found colorAdjustments");
+        
         currentScreenMode = Screen.fullScreenMode;
         allResolutions = Screen.resolutions;
 
@@ -37,11 +43,12 @@ public class UICodeTest : MonoBehaviour {
         var menuPanel = mainMenuRoot.Q<VisualElement>("MenuPanel");
         var optionPanel = mainMenuRoot.Q<VisualElement>("OptionsPanel");
         var creditPanel = mainMenuRoot.Q<VisualElement>("CreditPanel");
+        var levelPanel = mainMenuRoot.Q<VisualElement>("ChooseLevelPanel");
         
         
         //===Buttons Menu===
         var playBtt = mainMenuRoot.Q<Button>("PlayButton");
-        playBtt.RegisterCallback<ClickEvent>(evt => LogFunction("Play Button Clicked"));
+        playBtt.RegisterCallback<ClickEvent>(evt =>  ShowPanelMenu(true, menuPanel, levelPanel));
         
         var settingsBtt = mainMenuRoot.Q<Button>("OptionsButton");
         settingsBtt.RegisterCallback<ClickEvent>(evt => ShowPanelMenu(true, menuPanel, optionPanel));
@@ -54,6 +61,9 @@ public class UICodeTest : MonoBehaviour {
         
         var crMenuBtt = mainMenuRoot.Q<Button>("CreditMenuBtt");
         crMenuBtt.RegisterCallback<ClickEvent>(evt => ShowPanelMenu(false, menuPanel, creditPanel));
+        
+        var lvlMenuBtt = mainMenuRoot.Q<Button>("LevelMenuBtt");
+        lvlMenuBtt.RegisterCallback<ClickEvent>(evt => ShowPanelMenu(false, menuPanel, levelPanel));
         
         var quitBtt = mainMenuRoot.Q<Button>("QuitButton");
         quitBtt.RegisterCallback<ClickEvent>(evt => QuitApplication());
@@ -74,8 +84,42 @@ public class UICodeTest : MonoBehaviour {
         qualityPreset.index = QualitySettings.GetQualityLevel();
         qualityPreset.RegisterValueChangedCallback(evt => SetQualityPreset(qualityPreset));
 
+        var contrast = mainMenuRoot.Q<SliderInt>("Contrast");
+        contrast.RegisterValueChangedCallback(evt => colorAdjustments.contrast.value = evt.newValue);
+        
+        var brightness = mainMenuRoot.Q<Slider>("Brightness");
+        brightness.RegisterValueChangedCallback(evt => colorAdjustments.postExposure.value = evt.newValue);
+        
         var fovSlider = mainMenuRoot.Q<SliderInt>("FOV");
         fovSlider.RegisterValueChangedCallback(SetFov);
+        
+        var textureQuality = mainMenuRoot.Q<DropdownField>("TextureQuality");
+        textureQuality.choices = new List<string> {
+            "Full Resolution",
+            "Half Resolution",
+            "Quarter Resolution",
+            "Eighth Resolution",
+        };
+        textureQuality.index = QualitySettings.globalTextureMipmapLimit;
+        textureQuality.RegisterValueChangedCallback(evt => QualitySettings.globalTextureMipmapLimit = textureQuality.index);
+        
+        var shadowQuality = mainMenuRoot.Q<DropdownField>("ShadowQuality");
+        shadowQuality.choices = new List<string> {
+            "Off",
+            "Hard Shadow",
+            "Soft Shadow",
+        };
+        shadowQuality.index = (int)QualitySettings.shadows;
+        shadowQuality.RegisterValueChangedCallback(evt => ApplyShadowQuality(shadowQuality.index));
+        
+        var shadowRes = mainMenuRoot.Q<DropdownField>("ShadowRes");
+        shadowRes.choices = new List<string> {
+            "Low",
+            "Medium",
+            "High"
+        };
+        shadowRes.index = (int)QualitySettings.shadowResolution;
+        shadowRes.RegisterValueChangedCallback(evt => ApplyShadowResolution(shadowRes.index));
         
         //===Audio Settings===
         var masterVol = mainMenuRoot.Q<SliderInt>("Master");
@@ -142,6 +186,48 @@ public class UICodeTest : MonoBehaviour {
         LogFunction($"Change Quality Preset : {field.value}");
         QualitySettings.SetQualityLevel(field.index, true);
     }
+    
+    private void ApplyShadowQuality(int index) {
+        LogFunction($"Updating Shadow Quality");
+        var sun = RenderSettings.sun;
+
+        switch (index) {
+            case 0:
+                QualitySettings.shadows = ShadowQuality.Disable;
+                if (sun != null) sun.shadows = LightShadows.None;
+                break;
+            case 1:
+                QualitySettings.shadows = ShadowQuality.HardOnly;
+                if (sun != null) sun.shadows = LightShadows.Hard;
+                break;
+            case 2:
+                QualitySettings.shadows = ShadowQuality.All;
+                if (sun != null) sun.shadows = LightShadows.Soft;
+                break;
+        }
+    }
+    
+    private void ApplyShadowResolution(int index) {
+        LogFunction($"Updating Shadow Resolution");
+       
+        switch(index) {
+            case 0:
+                QualitySettings.shadowResolution = ShadowResolution.Low;
+                QualitySettings.shadowDistance = 25f;
+                break;
+
+            case 1:
+                QualitySettings.shadowResolution = ShadowResolution.Medium;
+                QualitySettings.shadowDistance = 50f;
+                break;
+
+            case 2:
+                QualitySettings.shadowResolution = ShadowResolution.High;
+                QualitySettings.shadowDistance = 100f;
+                break;
+        }
+    }
+    
     #endregion
 
     #region Audio Settings

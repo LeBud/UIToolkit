@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/UI%20Toolkit/USS/TestUI.uss?fileID=7433441132597879392&amp;guid=1b129eabe21775e409b4426b7d922b28&amp;type=3#TestUI"/>
     <Style src="project://database/Assets/UI%20Toolkit/USS/OptionsUSS.uss?fileID=7433441132597879392&amp;guid=098f595f4ad626e45925f0d4b97d2dbf&amp;type=3#OptionsUSS"/>
     <Style src="project://database/Assets/UI%20Toolkit/USS/OptionsElementsUSS.uss?fileID=7433441132597879392&amp;guid=4d73b22228ad35044ab33e7a36d88faa&amp;type=3#OptionsElementsUSS"/>
-    <ui:VisualElement name="MenuPanel" picking-mode="Position" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); overflow: visible; visibility: visible; display: none; position: relative;">
-        <ui:Label text="Game Name" name="GameText" class="GameTitle"/>
+    <ui:VisualElement name="MenuPanel" picking-mode="Position" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); overflow: visible; visibility: visible; display: flex; position: relative;">
+        <ui:Label text="Game Name" name="GameText" enabled="true" class="GameTitle" style="display: flex;"/>
         <ui:GroupBox name="MenuButton" style="align-items: center; height: auto; width: 100%; align-self: center; justify-content: flex-end; bottom: -60%;">
             <ui:Button text="Play" name="PlayButton" class="ButtonStyle"/>
             <ui:Button text="Options" name="OptionsButton" class="ButtonStyle"/>
@@ -11,16 +11,20 @@
             <ui:Button text="Quit" name="QuitButton" class="ButtonStyle"/>
         </ui:GroupBox>
     </ui:VisualElement>
-    <ui:VisualElement name="OptionsPanel" style="flex-grow: 1; display: flex;">
+    <ui:VisualElement name="OptionsPanel" style="flex-grow: 1; display: none;">
         <ui:Label text="Options" class="MenuTItle"/>
-        <ui:TabView class="unity-tab_header">
+        <ui:TabView name="TabView" tabindex="0" class="unity-tab_header" style="margin-top: 0; padding-top: 0;">
             <ui:Tab label="Video" name="video">
                 <ui:DropdownField label="Resolution" name="Resolution"/>
                 <ui:EnumField label="Display Mode" name="DisplayMode" include-obsolete-values="false"/>
-                <ui:DropdownField label="Quality Preset" name="QualityPreset"/>
-                <ui:SliderInt label="Contrast" value="42" high-value="100" name="Contrast" fill="true"/>
-                <ui:SliderInt label="Brightness" value="42" high-value="100" name="Brightness" fill="true"/>
-                <ui:SliderInt label="Field of view" value="80" high-value="100" name="FOV" fill="true" low-value="60"/>
+                <ui:DropdownField label="Quality Preset" name="QualityPreset" class="unitybasefield__input"/>
+                <ui:SliderInt label="Contrast" value="0" high-value="100" name="Contrast" fill="true"/>
+                <ui:Slider label="Brightness" value="0" high-value="5" name="Brightness" low-value="-5" fill="true"/>
+                <ui:SliderInt label="Field of view" value="60" high-value="100" name="FOV" fill="true" low-value="60"/>
+                <ui:Label text="Advanced Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
+                <ui:DropdownField label="Texture Quality" name="TextureQuality"/>
+                <ui:DropdownField label="Shadow Quality" name="ShadowQuality"/>
+                <ui:DropdownField label="Shadow Resolution" name="ShadowRes"/>
                 <ui:Label text="Accessibility Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
                 <ui:Toggle label="Show symbols" name="symbols"/>
                 <ui:Toggle label="Show outline" name="outlines"/>
@@ -42,11 +46,21 @@
             </ui:Tab>
             <ui:Tab label="Control" name="control"/>
         </ui:TabView>
-        <ui:Button text="back to menu" name="OptionsMenuBtt" class="ButtonStyle" style="width: 339px; height: auto;"/>
+        <ui:Button text="back to menu" name="OptionsMenuBtt" class="ButtonStyle" style="width: 339px; height: auto; transform-origin: left bottom;"/>
     </ui:VisualElement>
     <ui:VisualElement name="CreditPanel" style="flex-grow: 1; display: none;">
         <ui:Label text="Credits" class="MenuTItle"/>
         <ui:Label text="Game Designer :&#10;Name&#10;&#10;Game Art :&#10;Name&#10;&#10;Game Prog :&#10;Name" style="font-size: 24px; -unity-text-align: middle-center; margin-top: 150px; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
-        <ui:Button text="back to menu" name="CreditMenuBtt" class="ButtonStyle" style="width: 339px; height: auto; bottom: -555px;"/>
+        <ui:Button text="back to menu" name="CreditMenuBtt" class="ButtonStyle" style="width: 339px; height: auto; bottom: -555px; transform-origin: left bottom;"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="ChooseLevelPanel" style="flex-grow: 1; display: none;">
+        <ui:Label text="Select Level" class="MenuTItle"/>
+        <ui:GroupBox style="flex-direction: row; justify-content: space-between; height: 25%; width: 90%; transform-origin: center; align-content: flex-start; align-self: center;">
+            <ui:Button text="Level 1" name="Button" class="LevelSelectButton" style="flex-grow: 1;"/>
+            <ui:Button text="level 2" name="Button" class="LevelSelectButton" style="flex-grow: 1;"/>
+            <ui:Button text="level 3" name="Button" class="LevelSelectButton" style="flex-grow: 1;"/>
+            <ui:Button text="level 4" name="Button" class="LevelSelectButton" style="flex-grow: 1;"/>
+        </ui:GroupBox>
+        <ui:Button text="back to menu" name="LevelMenuBtt" class="ButtonStyle" style="width: 339px; height: auto; bottom: -61%; transform-origin: left bottom;"/>
     </ui:VisualElement>
 </ui:UXML>
