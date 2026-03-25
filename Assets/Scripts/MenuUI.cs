@@ -15,15 +15,19 @@ public class MenuUI : MonoBehaviour {
     [SerializeField] private UIDocument UIDocument;
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Volume volume;
+    [SerializeField] private Material outlineMat;
+    [SerializeField] private GameObject[] symbols;
     
     private ColorAdjustments colorAdjustments;
     
-    VisualElement mainMenuRoot;
-    VisualElement optionsMenuRoot;
+    private VisualElement mainMenuRoot;
+    private VisualElement optionsMenuRoot;
 
-    Resolution[] allResolutions;
-    FullScreenMode currentScreenMode;
-    int selectedResIndex;
+    private Label subtitleLabel;
+    
+    private Resolution[] allResolutions;
+    private FullScreenMode currentScreenMode;
+    private int selectedResIndex;
     
     private void Start() {
         if(volume.profile.TryGet(out colorAdjustments)) LogFunction("Found colorAdjustments");
@@ -45,6 +49,7 @@ public class MenuUI : MonoBehaviour {
         var creditPanel = mainMenuRoot.Q<VisualElement>("CreditPanel");
         var levelPanel = mainMenuRoot.Q<VisualElement>("ChooseLevelPanel");
         
+        subtitleLabel = mainMenuRoot.Q<Label>("subtitleText");
         
         //===Buttons Menu===
         var playBtt = mainMenuRoot.Q<Button>("PlayButton");
@@ -120,8 +125,33 @@ public class MenuUI : MonoBehaviour {
         };
         shadowRes.index = (int)QualitySettings.shadowResolution;
         shadowRes.RegisterValueChangedCallback(evt => ApplyShadowResolution(shadowRes.index));
+
+        var symbolsToggle = mainMenuRoot.Q<Toggle>("symbols");
+        symbolsToggle.RegisterValueChangedCallback(SetSymbols);
+        
+        var outlineToggle = mainMenuRoot.Q<Toggle>("outlines");
+        outlineToggle.RegisterValueChangedCallback(SetDisplayOutline);
+        
+        var outlineThickness = mainMenuRoot.Q<Slider>("outline-thickness");
+        outlineThickness.RegisterValueChangedCallback(SetOutlineThickness);
         
         //===Audio Settings===
+        var displaySubtitle = mainMenuRoot.Q<Toggle>("Subtitle");
+        displaySubtitle.RegisterValueChangedCallback(evt => { subtitleLabel.visible = evt.newValue; });
+        
+        var subtitlesSize = mainMenuRoot.Q<SliderInt>("subtitleSize");
+        subtitlesSize.RegisterValueChangedCallback(evt => { subtitleLabel.style.fontSize = evt.newValue; });
+
+        var subOutline = mainMenuRoot.Q<SliderInt>("subtitleOutline");
+        subOutline.RegisterValueChangedCallback(evt => { subtitleLabel.style.unityTextOutlineWidth = evt.newValue; });
+        
+        var subBackground = mainMenuRoot.Q<SliderInt>("subBackgroundOpacity");
+        subBackground.RegisterValueChangedCallback(evt => {
+            var backCol = Color.black;
+            backCol.a = evt.newValue / 100f;
+            subtitleLabel.style.backgroundColor = backCol;
+        });
+        
         var masterVol = mainMenuRoot.Q<SliderInt>("Master");
         masterVol.RegisterValueChangedCallback(evt => SetVolume(evt, "Master"));
 
@@ -135,13 +165,6 @@ public class MenuUI : MonoBehaviour {
         voiceVol.RegisterValueChangedCallback(evt => SetVolume(evt, "Voice"));
         
         //===Game Settings===
-        
-        
-        // var slider = root.Q<Slider>("Slider");
-        // slider.RegisterValueChangedCallback<float>(evt => ExampleFunction("Change Slider" + evt.newValue));
-        //
-        // var dropDown = root.Q<DropdownField>("Dropdown");
-        // dropDown.RegisterValueChangedCallback(evt => ExampleFunction("Change Dropdown" + evt.newValue));
     }
 
     private void SetFov(ChangeEvent<int> evt) {
@@ -227,11 +250,36 @@ public class MenuUI : MonoBehaviour {
                 break;
         }
     }
+
+    private void SetSymbols(ChangeEvent<bool> evt) {
+        LogFunction($"Display symbols : {evt.newValue}");
+
+        foreach (var s in symbols) {
+            s.SetActive(evt.newValue);
+        }
+    }
+    
+    private void SetOutlineThickness(ChangeEvent<float> evt) {
+        LogFunction($"Change Outline Thickness : {evt.newValue}");
+        
+        var thick = evt.newValue;
+        outlineMat.SetFloat("_Outline_Thickness", thick);
+    }
+
+    private void SetDisplayOutline(ChangeEvent<bool> evt) {
+        LogFunction($"Display Outline : {evt.newValue}");
+        
+        outlineMat.SetInt("_Display_Outline",  evt.newValue ? 1 : 0);
+    }
     
     #endregion
 
     #region Audio Settings
 
+    private void DisplaySubtitle(ChangeEvent<bool> evt) {
+        
+    }
+    
     private void SetVolume(ChangeEvent<int> evt, string mixerName) {
         LogFunction($"Change Volume {mixerName} : {evt.newValue}");
         

@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/UI%20Toolkit/USS/TestUI.uss?fileID=7433441132597879392&amp;guid=1b129eabe21775e409b4426b7d922b28&amp;type=3#TestUI"/>
     <Style src="project://database/Assets/UI%20Toolkit/USS/OptionsUSS.uss?fileID=7433441132597879392&amp;guid=098f595f4ad626e45925f0d4b97d2dbf&amp;type=3#OptionsUSS"/>
     <Style src="project://database/Assets/UI%20Toolkit/USS/OptionsElementsUSS.uss?fileID=7433441132597879392&amp;guid=4d73b22228ad35044ab33e7a36d88faa&amp;type=3#OptionsElementsUSS"/>
-    <ui:VisualElement name="MenuPanel" picking-mode="Position" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); overflow: visible; visibility: visible; display: flex; position: relative;">
+    <ui:VisualElement name="MenuPanel" picking-mode="Position" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); overflow: visible; visibility: visible; display: none; position: relative;">
         <ui:Label text="Game Name" name="GameText" enabled="true" class="GameTitle" style="display: flex;"/>
         <ui:GroupBox name="MenuButton" style="align-items: center; height: auto; width: 100%; align-self: center; justify-content: flex-end; bottom: -60%;">
             <ui:Button text="Play" name="PlayButton" class="ButtonStyle"/>
@@ -11,7 +11,7 @@
             <ui:Button text="Quit" name="QuitButton" class="ButtonStyle"/>
         </ui:GroupBox>
     </ui:VisualElement>
-    <ui:VisualElement name="OptionsPanel" style="flex-grow: 1; display: none;">
+    <ui:VisualElement name="OptionsPanel" style="flex-grow: 1; display: flex;">
         <ui:Label text="Options" class="MenuTItle"/>
         <ui:TabView name="TabView" tabindex="0" class="unity-tab_header" style="margin-top: 0; padding-top: 0;">
             <ui:Tab label="Video" name="video">
@@ -28,16 +28,22 @@
                 <ui:Label text="Accessibility Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
                 <ui:Toggle label="Show symbols" name="symbols"/>
                 <ui:Toggle label="Show outline" name="outlines"/>
-                <ui:SliderInt label="Outlines thickness" value="4" high-value="10" name="outline-thickness" low-value="1" fill="true"/>
+                <ui:Slider label="Outline Thickness" value="0.01" high-value="0.05" name="outline-thickness" fill="true"/>
             </ui:Tab>
             <ui:Tab label="Audio" name="audio">
                 <ui:DropdownField label="Audio Language" name="AudioLanguage" choices="Francais,English,Espanol" index="0"/>
                 <ui:DropdownField label="Text Language" name="TextLanguage" choices="French,English,Spanish,Russian,German,Japanese" index="0"/>
+                <ui:Label text="Subtitles Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
                 <ui:Toggle label="Dialoge Subtitles" name="Subtitle" value="false"/>
+                <ui:SliderInt label="Subtitles Size" value="16" high-value="42" name="subtitleSize" fill="true" low-value="12"/>
+                <ui:SliderInt label="Subtitles Outline Thickness" value="0" high-value="4" name="subtitleOutline" fill="true"/>
+                <ui:SliderInt label="Background Opacity" value="0" high-value="100" name="subBackgroundOpacity" fill="true"/>
+                <ui:Label text="Volume Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
                 <ui:SliderInt label="Master Volume" value="50" high-value="100" name="Master" fill="true" show-input-field="false" direction="Horizontal"/>
                 <ui:SliderInt label="SFX Volume" value="50" high-value="100" name="SFX" fill="true"/>
                 <ui:SliderInt label="Voice Volume" value="50" high-value="100" name="Voice" fill="true" show-input-field="false"/>
                 <ui:SliderInt label="Music VOlume" value="50" high-value="100" name="Music" inverted="false" fill="true"/>
+                <ui:Label text="Subtitle Text" name="subtitleText" style="position: absolute; right: -478px; top: 150px; -unity-font-style: bold; -unity-text-outline-width: 0; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(255, 255, 255); font-size: 16px; -unity-text-align: upper-center; visibility: hidden; background-color: rgba(0, 0, 0, 0);"/>
             </ui:Tab>
             <ui:Tab label="Game" name="game">
                 <ui:Toggle label="Invert Camera (horizontal)" name="InvertCamHor"/>
