@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
@@ -13,10 +15,19 @@ using Slider = UnityEngine.UIElements.Slider;
 public class MenuUI : MonoBehaviour {
 
     [SerializeField] private UIDocument UIDocument;
-    [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Volume volume;
     [SerializeField] private Material outlineMat;
     [SerializeField] private GameObject[] symbols;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource voiceSource;
+    [SerializeField] private AudioSource musicSource;
+    
+    [Header("Control")]
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private VisualTreeAsset controlTemplate;
     
     private ColorAdjustments colorAdjustments;
     
@@ -28,8 +39,14 @@ public class MenuUI : MonoBehaviour {
     private Resolution[] allResolutions;
     private FullScreenMode currentScreenMode;
     private int selectedResIndex;
+
+    private float musicTimer;
+
+    public event Action<string> onActionMapSwitchEvent;
     
     private void Start() {
+        onActionMapSwitchEvent += OnChangeInputMap;
+        
         if(volume.profile.TryGet(out colorAdjustments)) LogFunction("Found colorAdjustments");
         
         currentScreenMode = Screen.fullScreenMode;
@@ -165,6 +182,54 @@ public class MenuUI : MonoBehaviour {
         voiceVol.RegisterValueChangedCallback(evt => SetVolume(evt, "Voice"));
         
         //===Game Settings===
+        
+        //===Control Settings===
+        // var entry = mainMenuRoot.Q<VisualElement>("Entry");
+        // var action = playerInput.actions.actionMaps[0].actions[0];
+        // entry.dataSource = action;
+        
+        DisplayControl();
+    }
+
+    private void DisplayControl() {
+        var scrollView = mainMenuRoot.Q<ScrollView>("ControlArea");
+        scrollView.Clear();
+
+        var actionMap = playerInput.actions.actionMaps[0];
+        foreach (var action in actionMap.actions) {
+            controlTemplate.CloneTree(scrollView.contentContainer);
+            var entry = scrollView.ElementAt(scrollView.contentContainer.childCount - 1);
+            entry.dataSource = action;
+            
+            var remapBtt = entry.Q<Button>("remap");
+            remapBtt.clicked += () => { RemapButtonPressed(action); };
+        }
+        
+        onActionMapSwitchEvent?.Invoke(actionMap.name);
+    }
+    
+    private InputActionRebindingExtensions.RebindingOperation rebindingOperationKeyboard;
+    private InputActionRebindingExtensions.RebindingOperation rebindingOperationGamepad;
+    
+    private void RemapButtonPressed(InputAction action) {
+        action.Disable();
+
+        rebindingOperationKeyboard = action.PerformInteractiveRebinding().WithControlsExcluding("Mouse").WithTargetBinding(0).OnMatchWaitForAnother(0.1f);
+        rebindingOperationKeyboard.Start();
+        rebindingOperationKeyboard.OnComplete(OnRebindingOperationComplete);
+        
+        rebindingOperationGamepad = action.PerformInteractiveRebinding().WithControlsExcluding("Mouse").WithTargetBinding(0).OnMatchWaitForAnother(0.1f);
+        rebindingOperationGamepad.Start();
+        rebindingOperationGamepad.OnComplete(OnRebindingOperationComplete);
+    }
+
+    private void OnRebindingOperationComplete(InputActionRebindingExtensions.RebindingOperation operation) {
+        DisplayControl();
+
+        operation.action.Enable();
+
+        rebindingOperationKeyboard.Cancel();
+        rebindingOperationGamepad.Cancel();
     }
 
     private void SetFov(ChangeEvent<int> evt) {
@@ -275,13 +340,36 @@ public class MenuUI : MonoBehaviour {
     #endregion
 
     #region Audio Settings
-
-    private void DisplaySubtitle(ChangeEvent<bool> evt) {
-        
-    }
     
     private void SetVolume(ChangeEvent<int> evt, string mixerName) {
         LogFunction($"Change Volume {mixerName} : {evt.newValue}");
+
+        switch (mixerName) {
+            case "Master":
+                if(!sfxSource.isPlaying)
+                    sfxSource.Play();
+                if (!musicSource.isPlaying) {
+                    musicTimer = 2f;
+                    musicSource.Play();
+                }
+                if(!voiceSource.isPlaying)
+                    voiceSource.Play();
+                break;
+            case "SFX":
+                if(!sfxSource.isPlaying)
+                    sfxSource.Play();
+                break;
+            case "Music":
+                if (!musicSource.isPlaying) {
+                    musicTimer = 2f;
+                    musicSource.Play();
+                }
+                break;
+            case "Voice":
+                if(!voiceSource.isPlaying)
+                    voiceSource.Play();
+                break;
+        }
         
         var vol = Mathf.Log10(evt.newValue / 100f) * 20f;
         if(evt.newValue == 0) audioMixer.SetFloat(mixerName, -80f);
@@ -292,5 +380,15 @@ public class MenuUI : MonoBehaviour {
     
     private void LogFunction(string args) {
         Debug.Log(args);
+    }
+
+    private void Update() {
+        musicTimer -= Time.deltaTime;
+        if(musicTimer <= 0 && musicSource.isPlaying)
+            musicSource.Pause();
+    }
+
+    private void OnChangeInputMap(string obj) {
+        playerInput.SwitchCurrentActionMap(obj);
     }
 }

@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Entry" data-source-type="UnityEngine.InputSystem.InputAction, Unity.InputSystem" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="ControlName" style="flex-grow: 1;">
+            <ui:Label text="Control Name" name="ControlNameLabel" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 20px;">
+                <Bindings>
+                    <ui:DataBinding property="text" data-source-path="m_Name" binding-mode="ToTarget"/>
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+        <ui:VisualElement name="Keyboard" style="flex-grow: 1;">
+            <ui:Label text="Label" name="KeyboardLabel" style="color: rgb(255, 255, 255); font-size: 16px; -unity-font-style: bold; -unity-text-align: upper-center;">
+                <Bindings>
+                    <DefaultNamespace.RebingInput property="text"/>
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+        <ui:VisualElement name="Gamepad" style="flex-grow: 1;">
+            <ui:Label text="Label" name="GamepadLabel" style="font-size: 16px; -unity-text-align: upper-center; color: rgb(255, 255, 255); -unity-font-style: bold;">
+                <Bindings>
+                    <DefaultNamespace.RebingInput property="text" device="Gamepad"/>
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+        <ui:Button text="Remap" name="remap"/>
+    </ui:VisualElement>
+</ui:UXML>

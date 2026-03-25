@@ -39,10 +39,10 @@
                 <ui:SliderInt label="Subtitles Outline Thickness" value="0" high-value="4" name="subtitleOutline" fill="true"/>
                 <ui:SliderInt label="Background Opacity" value="0" high-value="100" name="subBackgroundOpacity" fill="true"/>
                 <ui:Label text="Volume Settings" style="font-size: 20px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(255, 255, 255);"/>
-                <ui:SliderInt label="Master Volume" value="50" high-value="100" name="Master" fill="true" show-input-field="false" direction="Horizontal"/>
-                <ui:SliderInt label="SFX Volume" value="50" high-value="100" name="SFX" fill="true"/>
-                <ui:SliderInt label="Voice Volume" value="50" high-value="100" name="Voice" fill="true" show-input-field="false"/>
-                <ui:SliderInt label="Music VOlume" value="50" high-value="100" name="Music" inverted="false" fill="true"/>
+                <ui:SliderInt label="Master Volume" value="100" high-value="100" name="Master" fill="true" show-input-field="false" direction="Horizontal"/>
+                <ui:SliderInt label="SFX Volume" value="100" high-value="100" name="SFX" fill="true"/>
+                <ui:SliderInt label="Voice Volume" value="100" high-value="100" name="Voice" fill="true" show-input-field="false"/>
+                <ui:SliderInt label="Music VOlume" value="100" high-value="100" name="Music" inverted="false" fill="true"/>
                 <ui:Label text="Subtitle Text" name="subtitleText" style="position: absolute; right: -478px; top: 150px; -unity-font-style: bold; -unity-text-outline-width: 0; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(255, 255, 255); font-size: 16px; -unity-text-align: upper-center; visibility: hidden; background-color: rgba(0, 0, 0, 0);"/>
             </ui:Tab>
             <ui:Tab label="Game" name="game">
@@ -50,7 +50,9 @@
                 <ui:Toggle label="Invert Camera (vertical)" name="InvertCamVer"/>
                 <ui:DropdownField label="Difficulty" name="Difficulty" choices="Easy,Medium,Hard" index="1"/>
             </ui:Tab>
-            <ui:Tab label="Control" name="control"/>
+            <ui:Tab label="Control" name="control">
+                <ui:ScrollView name="ControlArea"/>
+            </ui:Tab>
         </ui:TabView>
         <ui:Button text="back to menu" name="OptionsMenuBtt" class="ButtonStyle" style="width: 339px; height: auto; transform-origin: left bottom;"/>
     </ui:VisualElement>
